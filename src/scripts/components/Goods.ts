@@ -14,7 +14,8 @@ class Goods implements IGoods {
   }
 
   draw() {
-    goods.forEach(good => create('div', 'good', `${good.name} / ${good.year}`, (document.querySelector('.goods') as HTMLElement), ['id', good.id.toString()]));
+    goods.forEach(good => create('div', 'good', `${good.name} / ${good.year}`, 
+    (document.querySelector('.goods') as HTMLElement), ['id', good.id.toString()]));
   }
 }
 
