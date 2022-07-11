@@ -1,10 +1,10 @@
-interface Good {
+export interface IGood {
   id: number;
   name: string;
   year: number;
 }
 
-const goods: Good[] = [
+const goods: IGood[] = [
   {
     id: 1,
     name: 'Jordan 1',
@@ -19,6 +19,11 @@ const goods: Good[] = [
     id: 3,
     name: 'Jordan 3',
     year: 2011
+  },
+  {
+    id: 4,
+    name: 'Jordan 4',
+    year: 2010
   }
 ]
 
