@@ -1,3 +1,1 @@
-console.log('hello');
-console.log('by');
-console.log('by');
+import './style.scss';
