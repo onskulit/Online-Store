@@ -2,6 +2,18 @@
   font-size: 40px;
 }
 
+.goods {
+  padding: 100px 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
 .good {
-  background-color: red;
+  background-color: pink;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
