@@ -5,6 +5,6 @@ import { ColorsFilter, IColorsFilter } from './scripts/components/filters/Colors
 
 const colorFilter = new ColorsFilter(state);
 colorFilter.draw();
-const goods: IGoods = new Goods();
-goods.draw();
+export const goodsContainer: IGoods = new Goods(state);
+goodsContainer.draw(state);
 
