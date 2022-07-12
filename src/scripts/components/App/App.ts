@@ -21,6 +21,7 @@ export class App {
   colorFilter?: IFilterByValue;
   brandFilter?: IFilterByValue;
   heightFilter?: IFilterByValue;
+  sizeFilter?: IFilterByValue;
   goodsContainer?: IGoodsContainer;
   
   constructor(state: IGood[], filteredState?: IGood[], options?: options) {
@@ -36,6 +37,8 @@ export class App {
     this.brandFilter.draw();
     this.heightFilter = new FilterByValue(this.state, FiltersByValue.height, this.updateState.bind(this));
     this.heightFilter.draw();
+    this.sizeFilter = new FilterByValue(this.state, FiltersByValue.size, this.updateState.bind(this));
+    this.sizeFilter.draw();
     this.goodsContainer = new Goods(this.state);
     this.goodsContainer.draw(this.filteredState);
   }

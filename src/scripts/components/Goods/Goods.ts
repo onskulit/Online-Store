@@ -15,6 +15,9 @@ class Goods implements IGoodsContainer {
 
   draw(goods: IGood[]) {
     (document.querySelector('.goods') as HTMLElement).innerHTML = '';
+    if (!goods.length) {
+      (document.querySelector('.goods') as HTMLElement).innerHTML = 'No such items found';
+    }
     goods.forEach(good => {
       const item: HTMLElement = create('div', 'good', `${good.name} / ${good.year}`, 
       (document.querySelector('.goods') as HTMLElement), ['id', good.id.toString()]);

@@ -5,6 +5,7 @@ export enum FiltersByValue {
   colors = 'colors',
   brand = 'brand',
   height = 'height',
+  size = 'size'
 }
 
 export interface IFilterByValue {
@@ -49,6 +50,10 @@ export class FilterByValue implements IFilterByValue {
         }
       })
     })
+
+    if (this.filterType === FiltersByValue.size) {
+      this.options = this.options.sort((a, b) => +a - +b);
+    }
   }
 
   draw() {
@@ -93,5 +98,6 @@ export class FilterByValue implements IFilterByValue {
 
     updateState(state: IGood[]): void {
       this.filteredState = state;
+      this.initialState = this.goods;
     }
 }
