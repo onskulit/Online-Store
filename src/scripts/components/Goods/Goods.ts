@@ -1,12 +1,12 @@
-import { IGood } from "../state";
-import create from '../utils/create';
+import { IGood } from "../../state";
+import create from '../../utils/create';
 
-export interface IGoods {
+export interface IGoodsContainer {
   goods: IGood[];
   draw(goods: IGood[]): void;
 }
 
-class Goods implements IGoods {
+class Goods implements IGoodsContainer {
   goods: IGood[];
 
   constructor (goods: IGood[]) {

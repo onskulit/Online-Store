@@ -1,6 +1,5 @@
 import { IGood } from "../../state";
 import create from "../../utils/create";
-import { goodsContainer } from "../../../index";
 
 export enum FiltersByValue {
   colors = 'colors',
@@ -10,29 +9,36 @@ export enum FiltersByValue {
 
 export interface IFilterByValue {
   goods: IGood[];
-  filteredGoods: IGood[];
+  filteredState: IGood[];
+  initialState: IGood[];
   options: string[];
   activeOptions: string[];
   filterType: FiltersByValue;
   createOptions(): void;
   draw(): void;
   filter(): void;
-  onClickFilter(item: HTMLElement, option: string): () => void;
+  clickListener: (state: IGood[]) => void;
+  onClickFilter(item: HTMLElement, option: string): void;
+  updateState(state: IGood[]): void;
 }
 
 export class FilterByValue implements IFilterByValue {
   goods: IGood[];
-  filteredGoods: IGood[];
+  filteredState: IGood[];
+  initialState: IGood[];
   options: string[];
   activeOptions: string[];
   filterType: FiltersByValue;
+  clickListener: (state: IGood[]) => void;
 
-  constructor (goods: IGood[], filterType: FiltersByValue, filteredGoods?: IGood[], activeOptions?: string[]) {
+  constructor (goods: IGood[], filterType: FiltersByValue, clickListener: (state: IGood[]) => void, filteredState?: IGood[], activeOptions?: string[]) {
     this.goods = goods;
-    this.filteredGoods = filteredGoods || this.goods;
+    this.filteredState = filteredState || this.goods;
+    this.initialState = this.filteredState;
     this.options = [];
     this.activeOptions = activeOptions || [];
     this.filterType = filterType;
+    this.clickListener = clickListener;
   }
 
   createOptions() {
@@ -56,33 +62,36 @@ export class FilterByValue implements IFilterByValue {
       } else {
         item.textContent = option;
       }
-      item.addEventListener('click', this.onClickFilter(item, option))
+      item.addEventListener('click', () => {
+        this.onClickFilter(item, option);
+        this.clickListener(this.filteredState);
+      })
     })
   }
 
   filter() {
     if (!this.activeOptions.length) {
-      this.filteredGoods = this.goods;
+      this.filteredState = this.initialState;
     } else {
-      this.filteredGoods = this.goods
+      this.filteredState = this.filteredState
       .filter(good => this.activeOptions.some(option => good[this.filterType].includes(option)));
     }
   }
 
   onClickFilter(item: HTMLElement, option: string) {
-    return () => {
       if (item.classList.contains('active')) {
         item.classList.remove('active');
         const dataValue = item.dataset.option;
         this.activeOptions = this.activeOptions.filter(option => option !== dataValue);
         this.filter();
-        goodsContainer.draw(this.filteredGoods);
       } else {
         item.classList.add('active');
         this.activeOptions.push(option);
         this.filter();
-        goodsContainer.draw(this.filteredGoods);
       }
     }
-  }
+
+    updateState(state: IGood[]): void {
+      this.filteredState = state;
+    }
 }
