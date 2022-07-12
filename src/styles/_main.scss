@@ -9,6 +9,8 @@
 }
 
 .good {
+  display: flex;
+  flex-direction: column;
   background-color: pink;
 }
 
@@ -48,4 +50,8 @@
     transform: rotate(45deg);
     width: 6px;
   }
+}
+
+.good-img {
+  width: 150px;
 }

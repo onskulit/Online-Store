@@ -15,8 +15,12 @@ class Goods implements IGoods {
 
   draw(goods: IGood[]) {
     (document.querySelector('.goods') as HTMLElement).innerHTML = '';
-    goods.forEach(good => create('div', 'good', `${good.name} / ${good.year}`, 
-    (document.querySelector('.goods') as HTMLElement), ['id', good.id.toString()]));
+    goods.forEach(good => {
+      const item: HTMLElement = create('div', 'good', `${good.name} / ${good.year}`, 
+      (document.querySelector('.goods') as HTMLElement), ['id', good.id.toString()]);
+      const img: HTMLImageElement = create('img', 'good-img', null, item) as HTMLImageElement;
+      img.src = good.imgLink;
+    })
   }
 }
 
