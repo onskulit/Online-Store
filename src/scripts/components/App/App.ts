@@ -1,5 +1,5 @@
-import { ColorsFilter } from './../filters/ColorsFilter';
-import state, { IGood } from '../../state';
+import { IFilterByValue, FilterByValue, FiltersByValue } from '../filters/FilterByValue';
+import { IGood } from '../../state';
 
 type options = {
   filtersByValue?: {
@@ -10,22 +10,26 @@ type options = {
     years: [number, number];
     amount: [number, number];
   }
-  searchValue: string;
+  searchValue?: string;
 }
 
 export class App {
-  goods: IGood[];
-  filteredGoods: IGood[];
+  state: IGood[];
+  filteredState: IGood[];
   options?: options;
   
-  constructor(goods: IGood[], filteredGoods?: IGood[], options?: options) {
-    this.goods = goods;
-    this.filteredGoods = filteredGoods || this.goods;
+  constructor(state: IGood[], filteredState?: IGood[], options?: options) {
+    this.state = state;
+    this.filteredState = filteredState || this.state;
     this.options = options;
   }
 
-  draw():void {
-    const colorFilter = new ColorsFilter(state);
+  start():void {
+    const colorFilter: IFilterByValue = new FilterByValue(this.state, FiltersByValue.colors);
     colorFilter.draw();
+    const brandFilter: IFilterByValue = new FilterByValue(this.state, FiltersByValue.brand);
+    brandFilter.draw();
+    const heightFilter: IFilterByValue = new FilterByValue(this.state, FiltersByValue.height);
+    heightFilter.draw();
   }
 }

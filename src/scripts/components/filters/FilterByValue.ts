@@ -2,47 +2,60 @@ import { IGood } from "../../state";
 import create from "../../utils/create";
 import { goodsContainer } from "../../../index";
 
-export interface IColorsFilter {
+export enum FiltersByValue {
+  colors = 'colors',
+  brand = 'brand',
+  height = 'height',
+}
+
+export interface IFilterByValue {
   goods: IGood[];
   filteredGoods: IGood[];
   options: string[];
   activeOptions: string[];
+  filterType: FiltersByValue;
   createOptions(): void;
   draw(): void;
   filter(): void;
   onClickFilter(item: HTMLElement, option: string): () => void;
 }
 
-export class ColorsFilter implements IColorsFilter {
+export class FilterByValue implements IFilterByValue {
   goods: IGood[];
   filteredGoods: IGood[];
   options: string[];
   activeOptions: string[];
+  filterType: FiltersByValue;
 
-  constructor (goods: IGood[]) {
+  constructor (goods: IGood[], filterType: FiltersByValue, filteredGoods?: IGood[], activeOptions?: string[]) {
     this.goods = goods;
-    this.filteredGoods = goods;
+    this.filteredGoods = filteredGoods || this.goods;
     this.options = [];
-    this.activeOptions = [];
+    this.activeOptions = activeOptions || [];
+    this.filterType = filterType;
   }
 
   createOptions() {
     this.goods.forEach(good => {
-      good.colors.forEach(color => {
-        if (!this.options.includes(color)) {
-          this.options.push(color);
+      good[this.filterType].forEach(option => {
+        if (!this.options.includes(option)) {
+          this.options.push(option);
         }
       })
     })
   }
 
   draw() {
-    const container: HTMLElement = create('div', 'filter-container', 'Colors',
+    const container: HTMLElement = create('div', 'filter-container', this.filterType.toUpperCase(),
     (document.querySelector('.controls') as HTMLElement));
     this.createOptions();
     this.options.forEach(option => {
       const item: HTMLElement = create('button', 'filter-item', null, container, ['data-option', option]);
-      item.style.backgroundColor = option;
+      if (this.filterType === FiltersByValue.colors) {
+        item.style.backgroundColor = option;
+      } else {
+        item.textContent = option;
+      }
       item.addEventListener('click', this.onClickFilter(item, option))
     })
   }
@@ -52,7 +65,7 @@ export class ColorsFilter implements IColorsFilter {
       this.filteredGoods = this.goods;
     } else {
       this.filteredGoods = this.goods
-      .filter(good => this.activeOptions.some(option => good.colors.includes(option)));
+      .filter(good => this.activeOptions.some(option => good[this.filterType].includes(option)));
     }
   }
 
