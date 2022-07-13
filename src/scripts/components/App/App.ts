@@ -1,5 +1,6 @@
 import { IFilterByValue, FilterByValue, FiltersByValue } from '../filters/FilterByValue';
 import { Search, ISearch } from '../filters/Search';
+import { Sorting, ISorting } from '../filters/Sorting';
 import { IGood } from '../../state';
 import Goods, { IGoodsContainer } from '../Goods/Goods';
 
@@ -24,6 +25,7 @@ export class App {
   heightFilter?: IFilterByValue;
   sizeFilter?: IFilterByValue;
   search?: ISearch;
+  sorting?: ISorting;
   goodsContainer?: IGoodsContainer;
   
   constructor(state: IGood[], filteredState?: IGood[], options?: options) {
@@ -43,13 +45,14 @@ export class App {
     this.sizeFilter.draw();
     this.search = new Search(this.state, this.updateState.bind(this));
     this.search.draw();
+    this.sorting = new Sorting(this.state, this.updateState.bind(this));
+    this.sorting.draw();
     this.goodsContainer = new Goods(this.state);
     this.goodsContainer.draw(this.filteredState);
   }
 
   updateState(state: IGood[]): void {
     this.filteredState = state;
-    console.log(this.filteredState);
     this.rerender();
   }
 

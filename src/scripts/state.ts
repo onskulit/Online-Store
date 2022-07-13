@@ -2,6 +2,7 @@ export interface IGood {
   id: number;
   name: string;
   year: number;
+  amount: number;
   colors: string[];
   brand: string[];
   height: string[];
@@ -14,6 +15,7 @@ const state: IGood[] = [
     id: 1,
     name: 'Jordan 1',
     year: 2015,
+    amount: 2,
     colors: ['black'],
     brand: ['Jordan'],
     height: ['high'],
@@ -24,6 +26,7 @@ const state: IGood[] = [
     id: 2,
     name: 'Jordan 2',
     year: 2012,
+    amount: 4,
     colors: ['red', 'green', 'white'],
     brand: ['Jordan'],
     height: ['mid'],
@@ -34,6 +37,7 @@ const state: IGood[] = [
     id: 3,
     name: 'Jordan 3',
     year: 2011,
+    amount: 6,
     colors: ['red', 'white'],
     brand: ['Jordan'],
     height: ['mid'],
@@ -44,6 +48,7 @@ const state: IGood[] = [
     id: 4,
     name: 'Jordan 4',
     year: 2010,
+    amount: 3,
     colors: ['grey', 'white'],
     brand: ['Jordan'],
     height: ['mid'],
@@ -54,6 +59,7 @@ const state: IGood[] = [
     id: 5,
     name: 'Jordan 5',
     year: 2010,
+    amount: 1,
     colors: ['pink'],
     brand: ['Nike'],
     height: ['low'],
@@ -64,6 +70,7 @@ const state: IGood[] = [
     id: 6,
     name: 'Yeeze Foam Runner',
     year: 2022,
+    amount: 10,
     colors: ['white'],
     brand: ['Adidas'],
     height: ['low'],

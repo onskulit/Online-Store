@@ -70,3 +70,19 @@
   padding: 0.5rem 1rem;
   color: black;
 }
+
+input::-webkit-search-cancel-button {
+  filter: brightness(0) saturate(100%);
+  background-color: black;
+}
+
+.sorting {
+  margin-top: 10px;
+  background-color: $color-secondary;
+  border: 2px solid black;
+  border-radius: 50px;
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  color: black;
+}
