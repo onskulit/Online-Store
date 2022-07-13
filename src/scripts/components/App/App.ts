@@ -50,9 +50,10 @@ export class App {
   }
 
   rerender(): void {
-    (this.colorFilter as FilterByValue).updateState(this.filteredState);
+    /* (this.colorFilter as FilterByValue).updateState(this.filteredState);
     (this.brandFilter as FilterByValue).updateState(this.filteredState);
     (this.heightFilter as FilterByValue).updateState(this.filteredState);
+    (this.sizeFilter as FilterByValue).updateState(this.filteredState); */
     (this.goodsContainer as IGoodsContainer).draw(this.filteredState);
   }
 }

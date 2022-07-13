@@ -11,7 +11,6 @@ export enum FiltersByValue {
 export interface IFilterByValue {
   goods: IGood[];
   filteredState: IGood[];
-  initialState: IGood[];
   options: string[];
   activeOptions: string[];
   filterType: FiltersByValue;
@@ -26,7 +25,6 @@ export interface IFilterByValue {
 export class FilterByValue implements IFilterByValue {
   goods: IGood[];
   filteredState: IGood[];
-  initialState: IGood[];
   options: string[];
   activeOptions: string[];
   filterType: FiltersByValue;
@@ -35,7 +33,6 @@ export class FilterByValue implements IFilterByValue {
   constructor (goods: IGood[], filterType: FiltersByValue, clickListener: (state: IGood[]) => void, filteredState?: IGood[], activeOptions?: string[]) {
     this.goods = goods;
     this.filteredState = filteredState || this.goods;
-    this.initialState = this.filteredState;
     this.options = [];
     this.activeOptions = activeOptions || [];
     this.filterType = filterType;
@@ -76,9 +73,9 @@ export class FilterByValue implements IFilterByValue {
 
   filter() {
     if (!this.activeOptions.length) {
-      this.filteredState = this.initialState;
+      this.filteredState = this.goods;
     } else {
-      this.filteredState = this.filteredState
+      this.filteredState = this.goods
       .filter(good => this.activeOptions.some(option => good[this.filterType].includes(option)));
     }
   }
@@ -98,6 +95,5 @@ export class FilterByValue implements IFilterByValue {
 
     updateState(state: IGood[]): void {
       this.filteredState = state;
-      this.initialState = this.goods;
     }
 }

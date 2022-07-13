@@ -28,7 +28,7 @@
 
 .filter-item {
   position: relative;
-  width: 30px;
+  min-width: 30px;
   height: 30px;
   margin: 0 5px 0 5px;
   border-radius: 10px;
@@ -38,15 +38,19 @@
     cursor: pointer;
   }
 
+  &.active {
+    opacity: 0.5;
+  }
+
   &.active:after {
-    border: solid #fff;
+    border: solid rgb(255, 255, 255);
     border-width: 0 4px 4px 0;
     content: "";
     display: block;
     height: 10px;
-    left: 9px;
+    left: -5px;
     position: absolute;
-    top: 5px;
+    top: -7px;
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
     width: 6px;
