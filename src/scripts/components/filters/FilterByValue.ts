@@ -17,8 +17,8 @@ export interface IFilterByValue {
   createOptions(): void;
   draw(): void;
   filter(): void;
-  clickListener: (state: IGood[]) => void;
-  onClickFilter(item: HTMLElement, option: string): void;
+  changeListener: (state: IGood[]) => void;
+  onChangeFilter(item: HTMLElement, option: string): void;
   updateState(state: IGood[]): void;
 }
 
@@ -28,15 +28,15 @@ export class FilterByValue implements IFilterByValue {
   options: string[];
   activeOptions: string[];
   filterType: FiltersByValue;
-  clickListener: (state: IGood[]) => void;
+  changeListener: (state: IGood[]) => void;
 
-  constructor (goods: IGood[], filterType: FiltersByValue, clickListener: (state: IGood[]) => void, filteredState?: IGood[], activeOptions?: string[]) {
+  constructor (goods: IGood[], filterType: FiltersByValue, changeListener: (state: IGood[]) => void, filteredState?: IGood[], activeOptions?: string[]) {
     this.goods = goods;
     this.filteredState = filteredState || this.goods;
     this.options = [];
     this.activeOptions = activeOptions || [];
     this.filterType = filterType;
-    this.clickListener = clickListener;
+    this.changeListener = changeListener;
   }
 
   createOptions() {
@@ -65,8 +65,8 @@ export class FilterByValue implements IFilterByValue {
         item.textContent = option;
       }
       item.addEventListener('click', () => {
-        this.onClickFilter(item, option);
-        this.clickListener(this.filteredState);
+        this.onChangeFilter(item, option);
+        this.changeListener(this.filteredState);
       })
     })
   }
@@ -80,7 +80,7 @@ export class FilterByValue implements IFilterByValue {
     }
   }
 
-  onClickFilter(item: HTMLElement, option: string) {
+  onChangeFilter(item: HTMLElement, option: string) {
       if (item.classList.contains('active')) {
         item.classList.remove('active');
         const dataValue = item.dataset.option;
