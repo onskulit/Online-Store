@@ -8,14 +8,25 @@
   justify-content: space-around;
   flex-wrap: wrap;
   gap: 30px;
+  font-size: 2rem;
 }
 
 .good {
   width: 300px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  background-color: pink;
   font-size: 1.6rem;
+  background-color: $color-grey;
+  transition: .2s;
+
+  &:hover {
+    background-color: $color-precard;
+  }
+
+  &.active {
+    background-color: $color-card;
+  }
 }
 
 .good-img {
@@ -41,10 +52,16 @@
   font-size: 1.4rem;
 }
 
+.controls {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
 .filter-container {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  margin-bottom: 10px;
   font-size: 1.4rem;
 }
 
@@ -52,7 +69,7 @@
   position: relative;
   min-width: 30px;
   height: 30px;
-  margin: 0 5px 0 5px;
+  margin: 5px;
   border-radius: 10px;
   border: 0px;
 
@@ -80,6 +97,7 @@
 }
 
 .search {
+  min-width: 200px;
   background-color: $color-secondary;
   border: 2px solid black;
   border-radius: 50px;
@@ -95,6 +113,7 @@ input::-webkit-search-cancel-button {
 }
 
 .sorting {
+  min-width: 202px;
   margin-top: 10px;
   background-color: $color-secondary;
   border: 2px solid black;
@@ -103,4 +122,8 @@ input::-webkit-search-cancel-button {
   font-size: 1.4rem;
   padding: 0.7rem 1.4rem;
   color: black;
+}
+
+.sorting-item {
+  padding: 5px 0;
 }

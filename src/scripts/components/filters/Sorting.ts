@@ -46,9 +46,9 @@ export class Sorting implements ISorting {
 
   draw() {
     const container: HTMLSelectElement = create('select', 'sorting', null,
-    (document.querySelector('.controls') as HTMLElement), ['name', 'sorting']) as HTMLSelectElement;
+    (document.querySelector('.other-controls') as HTMLElement), ['name', 'sorting']) as HTMLSelectElement;
     this.values.forEach(value => {
-      create('option', null, value, container, ['value', value]) as HTMLOptionElement;
+      create('option', 'sorting-item', value, container, ['value', value]) as HTMLOptionElement;
     })
 
     container.addEventListener('change', (e) => {

@@ -55,7 +55,7 @@ export class FilterByValue implements IFilterByValue {
 
   draw() {
     const container: HTMLElement = create('div', 'filter-container', this.filterType.toUpperCase(),
-    (document.querySelector('.controls') as HTMLElement));
+    (document.querySelector('.filters-by-value') as HTMLElement));
     this.createOptions();
     this.options.forEach(option => {
       const item: HTMLElement = create('button', 'filter-item', null, container, ['data-option', option]);

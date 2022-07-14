@@ -27,7 +27,7 @@ export class Search implements ISearch {
 
   draw() {
     const container: HTMLElement = create('div', 'search-container', null,
-    (document.querySelector('.controls') as HTMLElement));
+    (document.querySelector('.other-controls') as HTMLElement));
     const search: HTMLInputElement = create('input', 'search', null, container, ['type', 'search'], ['placeholder', 'Search'], ['autofocus', '']) as HTMLInputElement;
     search.addEventListener('keyup', () => {
       this.value = search.value;
