@@ -1,66 +1,93 @@
-import { IFilterByValue, FilterByValue, FiltersByValue } from '../filters/FilterByValue';
-import { Search, ISearch } from '../filters/Search';
-import { Sorting, ISorting } from '../filters/Sorting';
+import { filtersByValueTypes, controlsTypes, SortingTypes } from './../../utils/Enums';
+import { FilterByValue } from '../filters/FilterByValue';
+import { Search } from '../filters/Search';
+import { Sorting } from '../filters/Sorting';
 import { IGood } from '../../state';
 import Goods, { IGoodsContainer } from '../Goods/Goods';
 
 type options = {
-  filtersByValue?: {
+  filtersByValue: {
     colors: string[];
-    brands: string[];
+    brand: string[];
+    height: string[];
+    size: string[];
   };
-  filtersByRange?: {
-    years: [number, number];
-    amount: [number, number];
+  filtersByRange: {
+    years: [number | null, number | null];
+    amount: [number | null, number | null];
   }
-  searchValue?: string;
+  searchValue: string;
+  sortingValue: SortingTypes
 }
 
 export class App {
   state: IGood[];
   filteredState: IGood[];
-  options?: options;
-  colorFilter?: IFilterByValue;
-  brandFilter?: IFilterByValue;
-  heightFilter?: IFilterByValue;
-  sizeFilter?: IFilterByValue;
-  search?: ISearch;
-  sorting?: ISorting;
+  options: options;
   goodsContainer?: IGoodsContainer;
   
   constructor(state: IGood[], filteredState?: IGood[], options?: options) {
     this.state = state;
     this.filteredState = filteredState || this.state;
-    this.options = options;
+    this.options = options || {
+      filtersByValue: {
+        colors: [],
+        brand: [],
+        height: [],
+        size: [],
+      }, filtersByRange: {
+        years: [null, null],
+        amount: [null, null]
+      }, 
+      searchValue: '',
+      sortingValue: SortingTypes.byAlphabetAsc
+    };
   }
 
   start(): void {
-    this.colorFilter = new FilterByValue(this.state, FiltersByValue.colors, this.updateState.bind(this));
-    this.colorFilter.draw();
-    this.brandFilter = new FilterByValue(this.state, FiltersByValue.brand, this.updateState.bind(this));
-    this.brandFilter.draw();
-    this.heightFilter = new FilterByValue(this.state, FiltersByValue.height, this.updateState.bind(this));
-    this.heightFilter.draw();
-    this.sizeFilter = new FilterByValue(this.state, FiltersByValue.size, this.updateState.bind(this));
-    this.sizeFilter.draw();
-    this.search = new Search(this.state, this.updateState.bind(this));
-    this.search.draw();
-    this.sorting = new Sorting(this.state, this.updateState.bind(this));
-    this.sorting.draw();
+    const colorFilter = new FilterByValue(this.state, filtersByValueTypes.colors, this.updateOptions.bind(this));
+    colorFilter.draw();
+    const brandFilter = new FilterByValue(this.state, filtersByValueTypes.brand, this.updateOptions.bind(this));
+    brandFilter.draw();
+    const heightFilter = new FilterByValue(this.state, filtersByValueTypes.height, this.updateOptions.bind(this));
+    heightFilter.draw();
+    const sizeFilter = new FilterByValue(this.state, filtersByValueTypes.size, this.updateOptions.bind(this));
+    sizeFilter.draw();
+    const search = new Search(this.updateOptions.bind(this));
+    search.draw();
+    const sorting = new Sorting(this.updateOptions.bind(this));
+    sorting.draw();
     this.goodsContainer = new Goods(this.state);
     this.goodsContainer.draw(this.filteredState);
   }
 
-  updateState(state: IGood[]): void {
-    this.filteredState = state;
-    this.rerender();
+  updateOptions(type: controlsTypes, option: string | string[] | SortingTypes, filterType?: filtersByValueTypes): void {
+    switch (type) {
+      case controlsTypes.filtersByValue:
+        this.options.filtersByValue[filterType as filtersByValueTypes] = option as string[];
+        this.rerender();
+        break;
+      case controlsTypes.search:
+        this.options.searchValue = option as string;
+        this.rerender();
+        break;
+      case controlsTypes.sorting:
+        this.options.sortingValue = option as SortingTypes;
+        this.rerender();
+        break;
+    }
+    /* this.rerender(); */
   }
 
   rerender(): void {
-    /* (this.colorFilter as FilterByValue).updateState(this.filteredState);
-    (this.brandFilter as FilterByValue).updateState(this.filteredState);
-    (this.heightFilter as FilterByValue).updateState(this.filteredState);
-    (this.sizeFilter as FilterByValue).updateState(this.filteredState); */
+    this.filteredState = this.state;
+    Object.entries(this.options.filtersByValue).forEach(([key, value]) => {
+      if (value.length) {
+        this.filteredState = FilterByValue.filter(this.filteredState, value, key as filtersByValueTypes);
+      }
+    });
+    this.filteredState = Search.filter(this.filteredState, this.options.searchValue);
+    this.filteredState = Sorting.sort(this.filteredState, this.options.sortingValue);
     (this.goodsContainer as IGoodsContainer).draw(this.filteredState);
-  } 
+  }
 }

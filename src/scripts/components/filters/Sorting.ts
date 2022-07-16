@@ -1,37 +1,20 @@
 import { IGood } from "../../state";
 import create from "../../utils/create";
-
-enum SortingTypes {
-  byAlphabetAsc = 'By name, A to Z',
-  byAlphabetDesc = 'By name, Z to A',
-  byYearAsc = 'By year, ascending',
-  byYearDesc = 'By year, descending',
-  byAmountAsc = 'By amount, ascending',
-  byAmountDesc = 'By amount, descending'
-}
+import { SortingTypes, controlsTypes } from "../../utils/Enums";
 
 export interface ISorting {
-  goods: IGood[];
-  filteredState: IGood[];
   values: SortingTypes[];
   value: SortingTypes;
   draw(): void;
-  filter(): void;
-  changeListener: (state: IGood[]) => void;
-  onChangeFilter(): void;
-  updateState(state: IGood[]): void;
+  updateOptions: (type: controlsTypes, option: SortingTypes) => void;
 }
 
 export class Sorting implements ISorting {
-  goods: IGood[];
-  filteredState: IGood[];
   values: SortingTypes[];
   value: SortingTypes;
-  changeListener: (state: IGood[]) => void;
+  updateOptions: (type: controlsTypes, option: SortingTypes) => void;
 
-  constructor (goods: IGood[], changeListener: (state: IGood[]) => void, filteredState?: IGood[], value?: SortingTypes) {
-    this.goods = goods;
-    this.filteredState = filteredState || this.goods;
+  constructor (updateOptions: (type: controlsTypes, option: SortingTypes) => void, value?: SortingTypes) {
     this.values = [
       SortingTypes.byAlphabetAsc,
       SortingTypes.byAlphabetDesc,
@@ -41,7 +24,7 @@ export class Sorting implements ISorting {
       SortingTypes.byYearDesc
     ];
     this.value = value || SortingTypes.byAlphabetAsc;
-    this.changeListener = changeListener;
+    this.updateOptions = updateOptions;
   }
 
   draw() {
@@ -53,39 +36,24 @@ export class Sorting implements ISorting {
 
     container.addEventListener('change', (e) => {
       this.value = (e.target as HTMLSelectElement).value as SortingTypes;
-      this.onChangeFilter();
-      this.changeListener(this.filteredState);
+      this.updateOptions(controlsTypes.sorting, this.value);
     })
   }
 
-  filter() {
-    switch (this.value) {
+  static sort(state: IGood[], value: SortingTypes) {
+    switch (value) {
       case SortingTypes.byAlphabetAsc:
-        this.filteredState = this.goods.sort((a,b) => a.name.localeCompare(b.name));
-        break;
+        return state.sort((a,b) => a.name.localeCompare(b.name));
       case SortingTypes.byAlphabetDesc:
-        this.filteredState = this.goods.sort((a,b) => b.name.localeCompare(a.name));
-        break;
+        return state.sort((a,b) => b.name.localeCompare(a.name));
       case SortingTypes.byAmountAsc:
-        this.filteredState = this.goods.sort((a,b) => a.amount - b.amount);
-        break;
+        return state.sort((a,b) => a.amount - b.amount);
       case SortingTypes.byAmountDesc:
-        this.filteredState = this.goods.sort((a,b) => b.amount - a.amount);
-        break;
+        return state.sort((a,b) => b.amount - a.amount);
       case SortingTypes.byYearAsc:
-        this.filteredState = this.goods.sort((a,b) => a.year - b.year);
-        break;
+        return state.sort((a,b) => a.year - b.year);
       case SortingTypes.byYearDesc:
-        this.filteredState = this.goods.sort((a,b) => b.year - a.year);
-        break;
+        return state.sort((a,b) => b.year - a.year);
     }
-  }
-
-  onChangeFilter() {
-      this.filter();
-  }
-
-  updateState(state: IGood[]): void {
-    this.filteredState = state;
   }
 }

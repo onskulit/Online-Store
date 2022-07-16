@@ -1,28 +1,20 @@
 import { IGood } from "../../state";
 import create from "../../utils/create";
+import { controlsTypes } from "../../utils/Enums";
 
 export interface ISearch {
-  goods: IGood[];
-  filteredState: IGood[];
   value: string;
   draw(): void;
-  filter(): void;
-  changeListener: (state: IGood[]) => void;
-  onChangeFilter(): void;
-  updateState(state: IGood[]): void;
+  updateOptions: (type: controlsTypes, option: string) => void;
 }
 
 export class Search implements ISearch {
-  goods: IGood[];
-  filteredState: IGood[];
   value: string;
-  changeListener: (state: IGood[]) => void;
+  updateOptions: (type: controlsTypes, option: string) => void;
 
-  constructor (goods: IGood[], changeListener: (state: IGood[]) => void, filteredState?: IGood[], value?: string) {
-    this.goods = goods;
-    this.filteredState = filteredState || this.goods;
+  constructor (updateOptions: (type: controlsTypes, option: string) => void, filteredState?: IGood[], value?: string) {
     this.value = value || '';
-    this.changeListener = changeListener;
+    this.updateOptions = updateOptions;
   }
 
   draw() {
@@ -31,26 +23,11 @@ export class Search implements ISearch {
     const search: HTMLInputElement = create('input', 'search', null, container, ['type', 'search'], ['placeholder', 'Search'], ['autofocus', '']) as HTMLInputElement;
     search.addEventListener('keyup', () => {
       this.value = search.value;
-      console.log(search.value);
-      this.onChangeFilter();
-      this.changeListener(this.filteredState);
+      this.updateOptions(controlsTypes.search, this.value);
     })
   }
 
-  filter() {
-    if (!this.value) {
-      this.filteredState = this.goods;
-    } else {
-      this.filteredState = this.goods
-      .filter(good => good.name.toUpperCase().includes(this.value.toUpperCase()));
-    }
+  static filter(state: IGood[], value: string) {
+    return state.filter(good => good.name.toUpperCase().includes(value.toUpperCase()));
   }
-
-  onChangeFilter() {
-      this.filter();
-    }
-
-    updateState(state: IGood[]): void {
-      this.filteredState = state;
-    }
 }
