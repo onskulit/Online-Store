@@ -1,7 +1,8 @@
-import { filtersByValueTypes, controlsTypes, SortingTypes } from './../../utils/Enums';
-import { FilterByValue } from '../filters/FilterByValue';
-import { Search } from '../filters/Search';
-import { Sorting } from '../filters/Sorting';
+import { FilterByRange } from './../controls/FilterByRange';
+import { filtersByValueTypes, controlsTypes, SortingTypes, filtersByRangeTypes } from './../../utils/Enums';
+import { FilterByValue } from '../controls/FilterByValue';
+import { Search } from '../controls/Search';
+import { Sorting } from '../controls/Sorting';
 import { IGood } from '../../state';
 import Goods, { IGoodsContainer } from '../Goods/Goods';
 
@@ -13,8 +14,8 @@ type options = {
     size: string[];
   };
   filtersByRange: {
-    years: [number | null, number | null];
-    amount: [number | null, number | null];
+    year: [number, number];
+    amount: [number, number];
   }
   searchValue: string;
   sortingValue: SortingTypes
@@ -36,8 +37,8 @@ export class App {
         height: [],
         size: [],
       }, filtersByRange: {
-        years: [null, null],
-        amount: [null, null]
+        year: [0, 0],
+        amount: [0, 0]
       }, 
       searchValue: '',
       sortingValue: SortingTypes.byAlphabetAsc
@@ -57,11 +58,15 @@ export class App {
     search.draw();
     const sorting = new Sorting(this.updateOptions.bind(this));
     sorting.draw();
+    const amountFilter = new FilterByRange(this.state, filtersByRangeTypes.amount, this.updateOptions.bind(this));
+    amountFilter.draw();
+    const yearFilter = new FilterByRange(this.state, filtersByRangeTypes.year, this.updateOptions.bind(this));
+    yearFilter.draw();
     this.goodsContainer = new Goods(this.state);
     this.goodsContainer.draw(this.filteredState);
   }
 
-  updateOptions(type: controlsTypes, option: string | string[] | SortingTypes, filterType?: filtersByValueTypes): void {
+  updateOptions(type: controlsTypes, option: string | string[] | [number, number] | SortingTypes, filterType?: filtersByValueTypes | filtersByRangeTypes): void {
     switch (type) {
       case controlsTypes.filtersByValue:
         this.options.filtersByValue[filterType as filtersByValueTypes] = option as string[];
@@ -72,6 +77,9 @@ export class App {
       case controlsTypes.sorting:
         this.options.sortingValue = option as SortingTypes;
         break;
+      case controlsTypes.filtersByRange:
+        this.options.filtersByRange[filterType as filtersByRangeTypes] = option as [number, number];
+        break;
     }
     this.rerender();
   }
@@ -81,6 +89,11 @@ export class App {
     Object.entries(this.options.filtersByValue).forEach(([key, value]) => {
       if (value.length) {
         this.filteredState = FilterByValue.filter(this.filteredState, value, key as filtersByValueTypes);
+      }
+    });
+    Object.entries(this.options.filtersByRange).forEach(([key, value]) => {
+      if (value !== [0, 0]) {
+        this.filteredState = FilterByRange.filter(this.filteredState, value, key as filtersByRangeTypes);
       }
     });
     this.filteredState = Search.filter(this.filteredState, this.options.searchValue);

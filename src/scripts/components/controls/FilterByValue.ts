@@ -20,7 +20,7 @@ export class FilterByValue implements IFilterByValue {
   filterType: filtersByValueTypes;
   updateOptions: (type: controlsTypes, option: string[], filterType?: filtersByValueTypes) => void;
 
-  constructor (goods: IGood[], filterType: filtersByValueTypes, updateOptions: (type: controlsTypes, option: string[], filterType?: filtersByValueTypes) => void, filteredState?: IGood[], activeOptions?: string[]) {
+  constructor (goods: IGood[], filterType: filtersByValueTypes, updateOptions: (type: controlsTypes, option: string[], filterType?: filtersByValueTypes) => void, activeOptions?: string[]) {
     this.goods = goods;
     this.options = [];
     this.activeOptions = activeOptions || [];

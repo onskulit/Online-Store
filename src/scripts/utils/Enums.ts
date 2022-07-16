@@ -1,3 +1,11 @@
+
+export enum controlsTypes {
+  filtersByValue = 'filtersByValue',
+  filtersByRange = 'filtersByRange',
+  search = 'search',
+  sorting = 'sorting'
+}
+
 export enum filtersByValueTypes {
   colors = 'colors',
   brand = 'brand',
@@ -5,11 +13,9 @@ export enum filtersByValueTypes {
   size = 'size'
 }
 
-export enum controlsTypes {
-  filtersByValue = 'filtersByValue',
-  filtersByRange = 'filtersByRange',
-  search = 'search',
-  sorting = 'sorting'
+export enum filtersByRangeTypes {
+  year = 'year',
+  amount = 'amount'
 }
 
 export enum SortingTypes {
