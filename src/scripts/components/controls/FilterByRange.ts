@@ -65,12 +65,11 @@ export class FilterByRange implements IFilterByRange {
     
     slider.on('change', (e) => {
       this.activeValues = [+e[0], +e[1]];
-      console.log(this.activeValues)
       this.updateOptions(controlsTypes.filtersByRange, this.activeValues, this.filterType);
     })
   }
 
   static filter(state: IGood[], options: [number, number], filterType: filtersByRangeTypes): IGood[] {
-    return state.filter(good => good[filterType] > options[0] && good[filterType] < options[1]);
+    return state.filter(good => good[filterType] >= options[0] && good[filterType] <= options[1]);
   }
 }

@@ -92,7 +92,7 @@ export class App {
       }
     });
     Object.entries(this.options.filtersByRange).forEach(([key, value]) => {
-      if (value !== [0, 0]) {
+      if (value[0] !== 0 && value[1] !== 0) {
         this.filteredState = FilterByRange.filter(this.filteredState, value, key as filtersByRangeTypes);
       }
     });
