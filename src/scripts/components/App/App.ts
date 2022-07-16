@@ -65,18 +65,15 @@ export class App {
     switch (type) {
       case controlsTypes.filtersByValue:
         this.options.filtersByValue[filterType as filtersByValueTypes] = option as string[];
-        this.rerender();
         break;
       case controlsTypes.search:
         this.options.searchValue = option as string;
-        this.rerender();
         break;
       case controlsTypes.sorting:
         this.options.sortingValue = option as SortingTypes;
-        this.rerender();
         break;
     }
-    /* this.rerender(); */
+    this.rerender();
   }
 
   rerender(): void {
