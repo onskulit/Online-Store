@@ -50,26 +50,26 @@ class Goods implements IGoodsContainer {
       Object.entries(good).forEach(([key, value]) => {
         if (key !== 'id' && key !== 'name' && key !== 'imgLink')
         create('li', 'good-info__item', `<b> ${key}: </b> ${value}`, item) as HTMLElement;
+      });
+      item.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        if (target.closest('.good')) {
+          const good = target.closest('.good') as HTMLElement;
+          const currentId = +(good.dataset.id as string);
+          if (good.classList.contains('active')) {
+            good.classList.remove('active');
+            this.cartItems = this.cartItems.filter(id => currentId !== id);
+            this.updateCart(cartUpdateMethod.remove);
+          } else {
+            good.classList.add('active');
+            this.cartItems.push(currentId);
+            this.updateCart(cartUpdateMethod.add);
+          }
+          this.updateOptions(controlsTypes.cart, this.cartItems);
+        }
       })
     })
     this.updateCart(cartUpdateMethod.update);
-    goodsContainer.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      if (target.closest('.good')) {
-        const good = target.closest('.good') as HTMLElement;
-        const currentId = +(good.dataset.id as string);
-        if (good.classList.contains('active')) {
-          good.classList.remove('active');
-          this.cartItems = this.cartItems.filter(id => currentId !== id);
-          this.updateCart(cartUpdateMethod.remove);
-        } else {
-          good.classList.add('active');
-          this.cartItems.push(currentId);
-          this.updateCart(cartUpdateMethod.add);
-        }
-        this.updateOptions(controlsTypes.cart, this.cartItems);
-      }
-    })
   }
 
   updateCart(method: cartUpdateMethod): void {
