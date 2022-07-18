@@ -70,6 +70,7 @@
 }
 
 .good-info__item {
+  line-height: 2.4rem;
   padding-left: 5px;
   list-style-type: none;
 }
@@ -131,23 +132,10 @@
 .filter-item {
   position: relative;
   margin: 5px;
+  border: solid $color-secondary 2px;
 
   &.active {
-    opacity: 0.5;
-  }
-
-  &.active:after {
-    border: solid rgb(255, 255, 255);
-    border-width: 0 4px 4px 0;
-    content: "";
-    display: block;
-    height: 10px;
-    left: -5px;
-    position: absolute;
-    top: -7px;
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
-    width: 6px;
+    border: solid $color-secondary-darkxl 2px;
   }
 }
 

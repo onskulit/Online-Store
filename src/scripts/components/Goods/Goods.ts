@@ -47,8 +47,13 @@ class Goods implements IGoodsContainer {
       img.src = good.imgLink;
       create('ul', 'good-info', null, item) as HTMLImageElement;
       Object.entries(good).forEach(([key, value]) => {
-        if (key !== 'id' && key !== 'name' && key !== 'imgLink')
-        create('li', 'good-info__item', `<b> ${key}: </b> ${value}`, item) as HTMLElement;
+        if (key !== 'id' && key !== 'name' && key !== 'imgLink') {
+          let currentValue = value;
+          if (Array.isArray(value)) {
+            currentValue = value.join(', ');
+          }
+          create('li', 'good-info__item', `<b> ${key}: </b> ${currentValue}`, item) as HTMLElement;
+        }
       });
       item.addEventListener('click', (e) => {
         const target = e.target as HTMLElement;
