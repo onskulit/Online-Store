@@ -84,6 +84,8 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  background-color: $color-secondary;
+  padding: 10px 5px;
 }
 
 .filter-container {
@@ -126,7 +128,7 @@
 
 .search {
   min-width: 200px;
-  background-color: $color-secondary;
+  background-color: $color-card;
   border: 2px solid black;
   border-radius: 50px;
   font-family: inherit;
@@ -143,7 +145,7 @@ input::-webkit-search-cancel-button {
 .sorting {
   min-width: 202px;
   margin-top: 10px;
-  background-color: $color-secondary;
+  background-color: $color-card;
   border: 2px solid black;
   border-radius: 50px;
   font-family: inherit;
