@@ -47,7 +47,7 @@ export class FilterByValue implements IFilterByValue {
     (document.querySelector('.filters-by-value') as HTMLElement));
     this.createOptions();
     this.options.forEach(option => {
-      const item: HTMLElement = create('button', 'filter-item', null, container, ['data-option', option]);
+      const item: HTMLElement = create('button', 'filter-item button', null, container, ['data-option', option]);
       if (this.filterType === filtersByValueTypes.colors) {
         item.style.backgroundColor = option;
       } else {

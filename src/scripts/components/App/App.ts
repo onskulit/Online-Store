@@ -3,6 +3,8 @@ import { filtersByValueTypes, controlsTypes, SortingTypes, filtersByRangeTypes }
 import { FilterByValue } from '../controls/FilterByValue';
 import { Search } from '../controls/Search';
 import { Sorting } from '../controls/Sorting';
+import { ResetFilters } from '../controls/ResetFilters';
+import { ResetSettings } from '../controls/ResetSettings';
 import { IGood } from '../../state';
 import Goods, { IGoodsContainer } from '../Goods/Goods';
 
@@ -51,7 +53,6 @@ export class App {
   }
 
   start(): void {
-    console.log(this.options);
     const colorFilter = new FilterByValue(this.state, filtersByValueTypes.colors, this.options.filtersByValue.colors, this.updateOptions.bind(this));
     colorFilter.draw();
     const brandFilter = new FilterByValue(this.state, filtersByValueTypes.brand, this.options.filtersByValue.brand, this.updateOptions.bind(this));
@@ -68,13 +69,19 @@ export class App {
     amountFilter.draw();
     const yearFilter = new FilterByRange(this.state, filtersByRangeTypes.year, this.options.filtersByRange.year, this.updateOptions.bind(this));
     yearFilter.draw();
+    const resetFilters = new ResetFilters(this.updateOptions.bind(this));
+    resetFilters.draw();
+    const resetSettings = new ResetSettings(this.updateOptions.bind(this));
+    resetSettings.draw();
     this.goodsContainer = new Goods(this.state, this.options.cartItems, this.updateOptions.bind(this));
     this.render();
 
     window.addEventListener('beforeunload', () => {this.setLocalStorage(this.options)});
   }
 
-  updateOptions(type: controlsTypes, option: string | string[] | number[] | [number, number] | SortingTypes, filterType?: filtersByValueTypes | filtersByRangeTypes): void {
+  updateOptions(type: controlsTypes, option?: string | string[] | number[] | [number, number] | SortingTypes, filterType?: filtersByValueTypes | filtersByRangeTypes): void {
+    const cartItems = this.options.cartItems;
+
     switch (type) {
       case controlsTypes.filtersByValue:
         this.options.filtersByValue[filterType as filtersByValueTypes] = option as string[];
@@ -91,11 +98,21 @@ export class App {
       case controlsTypes.cart:
         this.options.cartItems = option as number[];
         return;
+      case controlsTypes.resetFilters:
+        this.options = JSON.parse(JSON.stringify(this.defaultOptions));
+        this.options.cartItems = cartItems;
+        location.reload();
+        break;
+      case controlsTypes.resetSettings:
+        this.options = JSON.parse(JSON.stringify(this.defaultOptions));
+        location.reload();
+        break;
     }
     this.render();
   }
 
   render(): void {
+    console.log(this.options)
     this.filteredState = this.state;
     Object.entries(this.options.filtersByValue).forEach(([key, value]) => {
       if (value.length) {
@@ -119,7 +136,6 @@ export class App {
   }
 
   setLocalStorage(options: options): void {
-    console.log(JSON.stringify(options));
     localStorage.setItem('options', JSON.stringify(options));
   }
 }

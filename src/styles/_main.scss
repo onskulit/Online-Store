@@ -87,6 +87,20 @@
   flex-wrap: wrap;
   background-color: $color-secondary;
   padding: 10px 5px;
+
+  @media (max-width: $tablet) {
+    flex-direction: column-reverse;
+  }
+}
+
+.other-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  @media (max-width: $tablet) {
+    align-items: flex-start;
+  }
 }
 
 .filter-container {
@@ -96,18 +110,27 @@
   font-size: 1.4rem;
 }
 
-.filter-item {
-  position: relative;
+.button {
   min-width: 30px;
   height: 30px;
-  margin: 5px;
   border-radius: 10px;
   border: 0px;
   background-color: $color-secondary-darkl;
+  font-size: 1.4rem;
 
   &:hover {
     cursor: pointer;
   }
+}
+
+.reset-button {
+  width: 110px;
+  margin: 10px 0 5px 5px;
+}
+
+.filter-item {
+  position: relative;
+  margin: 5px;
 
   &.active {
     opacity: 0.5;
@@ -165,4 +188,8 @@ input::-webkit-search-cancel-button {
   margin-top: 10px;
   text-align: right;
   font-size: 1.4rem;
+
+  @media (max-width: $tablet) {
+    text-align: left;
+  }
 }

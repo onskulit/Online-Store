@@ -4,7 +4,9 @@ export enum controlsTypes {
   filtersByRange = 'filtersByRange',
   search = 'search',
   sorting = 'sorting',
-  cart = 'cart'
+  cart = 'cart',
+  resetFilters = 'resetFilters',
+  resetSettings = 'resetSettings'
 }
 
 export enum filtersByValueTypes {

@@ -40,7 +40,6 @@ class Goods implements IGoodsContainer {
     goods.forEach(good => {
       const item: HTMLElement = create('div', 'good', `<h3> ${good.name} </h3>`, 
       goodsContainer, ['data-id', good.id.toString()]);
-      console.log(this.cartItems);
       if (this.cartItems.includes(good.id)) {
         item.classList.add('active');
       }

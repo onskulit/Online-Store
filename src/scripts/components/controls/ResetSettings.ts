@@ -1,12 +1,12 @@
 import create from "../../utils/create";
 import { controlsTypes } from "../../utils/Enums";
 
-export interface IResetFilters {
+export interface IResetSettings {
   draw(): void;
   updateOptions: (type: controlsTypes) => void;
 }
 
-export class ResetFilters implements IResetFilters {
+export class ResetSettings implements IResetSettings {
   updateOptions: (type: controlsTypes) => void;
 
   constructor (updateOptions: (type: controlsTypes) => void) {
@@ -19,9 +19,9 @@ export class ResetFilters implements IResetFilters {
       container = create('div', 'reset-buttons-container', null,
         (document.querySelector('.other-controls') as HTMLElement));
     }
-    const button: HTMLElement = create('button', 'button reset-button', 'Reset Filters', container as HTMLElement);
+    const button: HTMLElement = create('button', 'button reset-button', 'Reset Settings', container as HTMLElement);
     button.addEventListener('click', () => {
-      this.updateOptions(controlsTypes.resetFilters);
+      this.updateOptions(controlsTypes.resetSettings);
     })
   }
 }
