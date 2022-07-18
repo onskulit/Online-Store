@@ -20,10 +20,10 @@ export class FilterByValue implements IFilterByValue {
   filterType: filtersByValueTypes;
   updateOptions: (type: controlsTypes, option: string[], filterType?: filtersByValueTypes) => void;
 
-  constructor (goods: IGood[], filterType: filtersByValueTypes, updateOptions: (type: controlsTypes, option: string[], filterType?: filtersByValueTypes) => void, activeOptions?: string[]) {
+  constructor (goods: IGood[], filterType: filtersByValueTypes, activeOptions: string[], updateOptions: (type: controlsTypes, option: string[], filterType?: filtersByValueTypes) => void) {
     this.goods = goods;
     this.options = [];
-    this.activeOptions = activeOptions || [];
+    this.activeOptions = activeOptions;
     this.filterType = filterType;
     this.updateOptions = updateOptions;
   }
@@ -52,6 +52,9 @@ export class FilterByValue implements IFilterByValue {
         item.style.backgroundColor = option;
       } else {
         item.textContent = option;
+      }
+      if (this.activeOptions.includes(option)) {
+        item.classList.add('active');
       }
       item.addEventListener('click', () => {
         this.onChangeFilter(item, option);

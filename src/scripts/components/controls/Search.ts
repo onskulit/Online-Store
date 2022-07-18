@@ -12,8 +12,8 @@ export class Search implements ISearch {
   value: string;
   updateOptions: (type: controlsTypes, option: string) => void;
 
-  constructor (updateOptions: (type: controlsTypes, option: string) => void, filteredState?: IGood[], value?: string) {
-    this.value = value || '';
+  constructor (value: string, updateOptions: (type: controlsTypes, option: string) => void) {
+    this.value = value;
     this.updateOptions = updateOptions;
   }
 
@@ -21,6 +21,7 @@ export class Search implements ISearch {
     const container: HTMLElement = create('div', 'search-container', null,
     (document.querySelector('.other-controls') as HTMLElement));
     const search: HTMLInputElement = create('input', 'search', null, container, ['type', 'search'], ['placeholder', 'Search'], ['autofocus', '']) as HTMLInputElement;
+    search.value = this.value;
     search.addEventListener('keyup', () => {
       this.value = search.value;
       this.updateOptions(controlsTypes.search, this.value);

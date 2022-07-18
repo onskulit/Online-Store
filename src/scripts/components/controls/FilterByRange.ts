@@ -20,7 +20,7 @@ export class FilterByRange implements IFilterByRange {
   filterType: filtersByRangeTypes;
   updateOptions: (type: controlsTypes, option: [number, number], filterType?: filtersByRangeTypes) => void;
 
-  constructor (goods: IGood[], filterType: filtersByRangeTypes, updateOptions: (type: controlsTypes, option: [number, number], filterType?: filtersByRangeTypes) => void, activeValues?: [number, number]) {
+  constructor (goods: IGood[], filterType: filtersByRangeTypes, activeValues: [number, number] | null, updateOptions: (type: controlsTypes, option: [number, number], filterType?: filtersByRangeTypes) => void) {
     this.goods = goods;
     this.filterType = filterType;
     this.initialValues = this.createOptions();
@@ -49,7 +49,7 @@ export class FilterByRange implements IFilterByRange {
     this.createOptions();
     const sliderContainer = create('div', 'slider', null, container, ['data-option', this.filterType]) as noUiSlider.target;
     const slider = noUiSlider.create(sliderContainer, {
-      start: this.initialValues,
+      start: this.activeValues,
       connect: true,
       range: {
         'min': this.initialValues[0],

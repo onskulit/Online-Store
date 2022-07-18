@@ -14,59 +14,67 @@ type options = {
     size: string[];
   };
   filtersByRange: {
-    year: [number, number];
-    amount: [number, number];
+    year: [number, number] | null;
+    amount: [number, number] | null;
   }
   searchValue: string;
-  sortingValue: SortingTypes
+  sortingValue: SortingTypes;
+  cartItems: number[];
 }
 
 export class App {
   state: IGood[];
   filteredState: IGood[];
+  defaultOptions: options;
   options: options;
   goodsContainer?: IGoodsContainer;
   
-  constructor(state: IGood[], filteredState?: IGood[], options?: options) {
+  constructor(state: IGood[]) {
     this.state = state;
-    this.filteredState = filteredState || this.state;
-    this.options = options || {
+    this.filteredState = this.state;
+    this.defaultOptions = {
       filtersByValue: {
         colors: [],
         brand: [],
         height: [],
         size: [],
-      }, filtersByRange: {
-        year: [0, 0],
-        amount: [0, 0]
-      }, 
+      },
+      filtersByRange: {
+        year: null,
+        amount: null
+      },
       searchValue: '',
-      sortingValue: SortingTypes.byAlphabetAsc
+      sortingValue: SortingTypes.byAlphabetAsc,
+      cartItems: []
     };
+    this.options = this.getLocalStorage() || this.defaultOptions;
   }
 
   start(): void {
-    const colorFilter = new FilterByValue(this.state, filtersByValueTypes.colors, this.updateOptions.bind(this));
+    console.log(this.options);
+    const colorFilter = new FilterByValue(this.state, filtersByValueTypes.colors, this.options.filtersByValue.colors, this.updateOptions.bind(this));
     colorFilter.draw();
-    const brandFilter = new FilterByValue(this.state, filtersByValueTypes.brand, this.updateOptions.bind(this));
+    const brandFilter = new FilterByValue(this.state, filtersByValueTypes.brand, this.options.filtersByValue.brand, this.updateOptions.bind(this));
     brandFilter.draw();
-    const heightFilter = new FilterByValue(this.state, filtersByValueTypes.height, this.updateOptions.bind(this));
+    const heightFilter = new FilterByValue(this.state, filtersByValueTypes.height, this.options.filtersByValue.height, this.updateOptions.bind(this));
     heightFilter.draw();
-    const sizeFilter = new FilterByValue(this.state, filtersByValueTypes.size, this.updateOptions.bind(this));
+    const sizeFilter = new FilterByValue(this.state, filtersByValueTypes.size, this.options.filtersByValue.size, this.updateOptions.bind(this));
     sizeFilter.draw();
-    const search = new Search(this.updateOptions.bind(this));
+    const search = new Search(this.options.searchValue, this.updateOptions.bind(this));
     search.draw();
-    const sorting = new Sorting(this.updateOptions.bind(this));
+    const sorting = new Sorting(this.options.sortingValue, this.updateOptions.bind(this));
     sorting.draw();
-    const amountFilter = new FilterByRange(this.state, filtersByRangeTypes.amount, this.updateOptions.bind(this));
+    const amountFilter = new FilterByRange(this.state, filtersByRangeTypes.amount, this.options.filtersByRange.amount, this.updateOptions.bind(this));
     amountFilter.draw();
-    const yearFilter = new FilterByRange(this.state, filtersByRangeTypes.year, this.updateOptions.bind(this));
+    const yearFilter = new FilterByRange(this.state, filtersByRangeTypes.year, this.options.filtersByRange.year, this.updateOptions.bind(this));
     yearFilter.draw();
-    this.goodsContainer = new Goods(this.state);
-    this.goodsContainer.draw(this.filteredState);
+    this.goodsContainer = new Goods(this.state, this.options.cartItems, this.updateOptions.bind(this));
+    this.render();
+
+    window.addEventListener('beforeunload', () => {this.setLocalStorage(this.options)});
   }
 
-  updateOptions(type: controlsTypes, option: string | string[] | [number, number] | SortingTypes, filterType?: filtersByValueTypes | filtersByRangeTypes): void {
+  updateOptions(type: controlsTypes, option: string | string[] | number[] | [number, number] | SortingTypes, filterType?: filtersByValueTypes | filtersByRangeTypes): void {
     switch (type) {
       case controlsTypes.filtersByValue:
         this.options.filtersByValue[filterType as filtersByValueTypes] = option as string[];
@@ -80,11 +88,14 @@ export class App {
       case controlsTypes.filtersByRange:
         this.options.filtersByRange[filterType as filtersByRangeTypes] = option as [number, number];
         break;
+      case controlsTypes.cart:
+        this.options.cartItems = option as number[];
+        return;
     }
-    this.rerender();
+    this.render();
   }
 
-  rerender(): void {
+  render(): void {
     this.filteredState = this.state;
     Object.entries(this.options.filtersByValue).forEach(([key, value]) => {
       if (value.length) {
@@ -92,12 +103,23 @@ export class App {
       }
     });
     Object.entries(this.options.filtersByRange).forEach(([key, value]) => {
-      if (value[0] !== 0 && value[1] !== 0) {
+      if (value !== null) {
         this.filteredState = FilterByRange.filter(this.filteredState, value, key as filtersByRangeTypes);
       }
     });
     this.filteredState = Search.filter(this.filteredState, this.options.searchValue);
     this.filteredState = Sorting.sort(this.filteredState, this.options.sortingValue);
     (this.goodsContainer as IGoodsContainer).draw(this.filteredState);
+  }
+
+  getLocalStorage(): void | options {
+    if (localStorage.getItem('options')) {
+      return JSON.parse(localStorage.getItem('options') as string) as options;
+    }
+  }
+
+  setLocalStorage(options: options): void {
+    console.log(JSON.stringify(options));
+    localStorage.setItem('options', JSON.stringify(options));
   }
 }

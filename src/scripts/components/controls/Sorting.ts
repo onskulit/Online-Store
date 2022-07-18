@@ -14,7 +14,7 @@ export class Sorting implements ISorting {
   value: SortingTypes;
   updateOptions: (type: controlsTypes, option: SortingTypes) => void;
 
-  constructor (updateOptions: (type: controlsTypes, option: SortingTypes) => void, value?: SortingTypes) {
+  constructor (value: SortingTypes, updateOptions: (type: controlsTypes, option: SortingTypes) => void) {
     this.values = [
       SortingTypes.byAlphabetAsc,
       SortingTypes.byAlphabetDesc,
@@ -23,7 +23,7 @@ export class Sorting implements ISorting {
       SortingTypes.byYearAsc,
       SortingTypes.byYearDesc
     ];
-    this.value = value || SortingTypes.byAlphabetAsc;
+    this.value = value;
     this.updateOptions = updateOptions;
   }
 
@@ -31,7 +31,10 @@ export class Sorting implements ISorting {
     const container: HTMLSelectElement = create('select', 'sorting', null,
     (document.querySelector('.other-controls') as HTMLElement), ['name', 'sorting']) as HTMLSelectElement;
     this.values.forEach(value => {
-      create('option', 'sorting-item', value, container, ['value', value]) as HTMLOptionElement;
+      const option = create('option', 'sorting-item', value, container, ['value', value]) as HTMLOptionElement;
+      if (value === this.value) {
+        option.setAttribute('selected', '');
+      }
     })
 
     container.addEventListener('change', (e) => {

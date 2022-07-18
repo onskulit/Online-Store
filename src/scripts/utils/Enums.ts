@@ -3,7 +3,8 @@ export enum controlsTypes {
   filtersByValue = 'filtersByValue',
   filtersByRange = 'filtersByRange',
   search = 'search',
-  sorting = 'sorting'
+  sorting = 'sorting',
+  cart = 'cart'
 }
 
 export enum filtersByValueTypes {
