@@ -6,7 +6,7 @@
 
 .slider {
   height: 10px;
-  margin-top: 5px;
+  margin: 5px 15px 0 0;
 }
 
 .slider .noUi-connect {
@@ -30,7 +30,13 @@
 }
 
 .slider .noUi-tooltip {
-  display: none;
+  min-width: 25px;
+  display: block;
+  left: 50%;
+  bottom: -30%;
+  border-radius: 10px;
+  border: none;
+  background-color: $color-secondary-darkl;
 }
 .slider .noUi-active .noUi-tooltip {
   display: block;
