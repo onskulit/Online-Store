@@ -81,6 +81,7 @@ export class App {
 
   updateOptions(type: controlsTypes, option?: string | string[] | number[] | [number, number] | SortingTypes, filterType?: filtersByValueTypes | filtersByRangeTypes): void {
     const cartItems = this.options.cartItems;
+    const sortingValue = this.options.sortingValue;
 
     switch (type) {
       case controlsTypes.filtersByValue:
@@ -101,6 +102,7 @@ export class App {
       case controlsTypes.resetFilters:
         this.options = JSON.parse(JSON.stringify(this.defaultOptions));
         this.options.cartItems = cartItems;
+        this.options.sortingValue = sortingValue;
         location.reload();
         break;
       case controlsTypes.resetSettings:
