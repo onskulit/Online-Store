@@ -1,7 +1,8 @@
-.header .wrapper {
-  padding-top: 10px;
+.header-container {
+  padding: 10px 5px 0 5px;
   display: flex;
   justify-content: space-between;
+  background-color: $color-secondary;
 }
 
 .shopping-cart {
@@ -19,7 +20,7 @@
   left: -15px;
   top: -7px;
   border-radius: 100%;
-  background-color: $color-card;
+  background-color: $color-secondary-darkxl;
   display: none;
   justify-content: center;
   align-items: center;
@@ -42,16 +43,16 @@
   display: flex;
   flex-direction: column;
   font-size: 1.6rem;
-  background-color: $color-grey;
+  background-color: $color-secondary;
   transition: .2s;
 
   &:hover {
-    background-color: $color-precard;
+    background-color: $color-secondary-darkl;
     cursor: pointer;
   }
 
   &.active {
-    background-color: $color-card;
+    background-color: $color-secondary-darkxl;
   }
 }
 
@@ -102,6 +103,7 @@
   margin: 5px;
   border-radius: 10px;
   border: 0px;
+  background-color: $color-secondary-darkl;
 
   &:hover {
     cursor: pointer;
@@ -128,7 +130,7 @@
 
 .search {
   min-width: 200px;
-  background-color: $color-card;
+  background-color: $color-secondary-darkl;
   border: 2px solid black;
   border-radius: 50px;
   font-family: inherit;
@@ -145,7 +147,7 @@ input::-webkit-search-cancel-button {
 .sorting {
   min-width: 202px;
   margin-top: 10px;
-  background-color: $color-card;
+  background-color: $color-secondary-darkl;
   border: 2px solid black;
   border-radius: 50px;
   font-family: inherit;
